@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Bingo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Bingo</h1>
+        <button id="generate-button">Generate Bingo Item</button>
+        <div id="bingo-item" class="bingo-item"></div>
+    </div>
+    <script>
+        document.getElementById('generate-button').addEventListener('click', function() {
+            fetch('/bingo')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('bingo-item').innerText = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching bingo item:', error);
+                });
+        });
+    </script>
+</body>
+</html>
