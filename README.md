@@ -1,7 +1,7 @@
 # YouTube Bingo Web Application
 
 ## Overview
-This project is a web application that allows users to play a bingo game by randomly selecting items from a predefined list. The application is built using Go and serves a simple web interface for user interaction.
+This project is a web application that allows users to play Youtube Bingo by randomly selecting items from a predefined list. The application is built using Go and serves a simple web interface for user interaction.
 
 ## Project Structure
 ```

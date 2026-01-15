@@ -1,7 +1,3 @@
-module youtube-bingo-web
+module YoutubeBingo
 
 go 1.18
-
-require (
-    github.com/gin-gonic/gin v1.7.4
-)
