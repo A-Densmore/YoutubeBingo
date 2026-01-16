@@ -1,44 +1,44 @@
 package handlers
 
 import (
-	"bufio"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 )
 
+var (
+	ListContent  string
+	IndexContent string
+)
+
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	// Load list.txt
+	listData, err := os.ReadFile("list.txt")
+	if err != nil {
+		log.Printf("Warning: Failed to read list.txt: %v", err)
+	}
+	ListContent = string(listData)
+
+	// Load index.html
+	indexData, err := os.ReadFile("web/templates/index.html")
+	if err != nil {
+		log.Printf("Warning: Failed to read web/templates/index.html: %v", err)
+	}
+	IndexContent = string(indexData)
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "../../web/templates/index.html")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, IndexContent)
 }
 
 func GetRandomBingoItem(w http.ResponseWriter, r *http.Request) {
-	rand.Seed(time.Now().UnixNano())
-	filepath := "../../list.txt"
-
-	file, err := os.Open(filepath)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error opening file: %v", err), http.StatusInternalServerError)
-		return
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		http.Error(w, fmt.Sprintf("Error reading file: %v", err), http.StatusInternalServerError)
-		return
-	}
+	lines := strings.Split(strings.TrimSpace(ListContent), "\n")
 
 	if len(lines) == 0 {
 		http.Error(w, "File is empty", http.StatusInternalServerError)
